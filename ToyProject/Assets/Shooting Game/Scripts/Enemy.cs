@@ -7,6 +7,10 @@ public class Enemy : MonoBehaviour
     [Header("¼Ó¼º")]
     public float speed = 5;
     private Vector3 dir;
+    public int HP = 1;
+
+    [Header("ÀÌÆåÆ®")]
+    public GameObject[] explosionFactory;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +38,27 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("dz")) return;
 
-        Destroy(other.gameObject);
-        Destroy(gameObject);
+        if (other.CompareTag("Bullet"))
+        {
+            GameObject fire = Instantiate(explosionFactory[1]);
+            fire.transform.position = transform.position;       
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            GameObject smoke = Instantiate(explosionFactory[0]);
+            smoke.transform.position = transform.position;
+        }
+
+        if (HP >= 2)
+        {
+            Destroy(other.gameObject);
+            HP--;
+        }
+        else
+        {
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
     }
 }
